@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { AccountService } from '../account.service';
+import { catchError, EMPTY, finalize, Subject, takeUntil, tap } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -15,15 +19,46 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
 })
-export class LoginComponent {
-  hide = false;
+export class LoginComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
 
-  form = this.fb.group({
-    username: ['', [Validators.required]],
-    password: ['', [Validators.required]],
+  hide = true;
+  loading = false;
+  error = '';
+
+  form = this.fb.nonNullable.group({
+    UserName: ['', [Validators.required]],
+    Password: ['', [Validators.required]],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private account: AccountService) {}
+
+  login() {
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.account
+      .login(this.form.value)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(() => (this.error = '')),
+        finalize(() => (this.loading = false)),
+        catchError((err: HttpErrorResponse) => {
+          this.error = err.error.error;
+          return EMPTY;
+        })
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
