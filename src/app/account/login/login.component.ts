@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { AccountService } from '../account.service';
 import { catchError, EMPTY, finalize, Subject, takeUntil, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,11 @@ export class LoginComponent implements OnDestroy {
     Password: ['', [Validators.required]],
   });
 
-  constructor(private fb: FormBuilder, private account: AccountService) {}
+  constructor(
+    private fb: FormBuilder,
+    private account: AccountService,
+    private router: Router
+  ) {}
 
   login() {
     if (this.form.invalid) {
@@ -47,7 +52,10 @@ export class LoginComponent implements OnDestroy {
       .login(this.form.value)
       .pipe(
         takeUntil(this.destroy$),
-        tap(() => (this.error = '')),
+        tap(() => {
+          this.error = '';
+          this.router.navigate(['dashboard']);
+        }),
         finalize(() => (this.loading = false)),
         catchError((err: HttpErrorResponse) => {
           this.error = err.error.error;
