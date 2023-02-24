@@ -6,8 +6,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { ISubscriber } from '../subscriber.model';
-import { catchError, map, merge, of, startWith, switchMap } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  EMPTY,
+  map,
+  merge,
+  of,
+  startWith,
+  switchMap,
+} from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { IConfirmDialog } from 'src/app/core/models/confirm-dialog.model';
+import { ConfirmDialogComponent } from 'src/app/core/components/confirm-dialog/confirm-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-subscriber-list',
@@ -18,6 +31,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTableModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
+    MatSnackBarModule,
   ],
   templateUrl: './subscriber-list.component.html',
 })
@@ -39,40 +54,67 @@ export class SubscriberListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private subscriberService: SubscriberService) {}
+  constructor(
+    private subsService: SubscriberService,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar
+  ) {}
 
   ngAfterViewInit() {
     merge(this.paginator.page)
       .pipe(
         startWith({}),
-        switchMap(() => this.getSubscribersByPage()),
-        map(result => {
-          this.isLoadingResults = false;
-
-          if (result === null) {
-            return [];
-          }
-
-          this.resultsLength = result.Count;
-          return result.Data;
-        })
+        switchMap(() => this.getSubscribersByPage())
       )
       .subscribe(result => (this.data = result));
   }
 
   getSubscribersByPage() {
     this.isLoadingResults = true;
+
     const params: IPageParams = {
       page: this.paginator.pageIndex + 1,
       count: this.pageSize,
     };
 
-    return this.subscriberService
-      .getAllSubscribers(params)
-      .pipe(catchError(() => of(null)));
+    return this.subsService.getAllSubscribers(params).pipe(
+      catchError(() => of(null)),
+      map(result => {
+        this.isLoadingResults = false;
+
+        if (result === null) {
+          return [];
+        }
+
+        this.resultsLength = result.Count;
+        return result.Data;
+      })
+    );
   }
 
   openUpdateDialog(id: number) {}
 
-  openDeleteDialog(id: number) {}
+  openDeleteDialog(id: number) {
+    const data: IConfirmDialog = {
+      title: 'Delete item',
+      description: 'Are you sure you want to delete this item?',
+      buttonLabel: 'Delete',
+      icon: 'delete',
+    };
+
+    this.dialog
+      .open(ConfirmDialogComponent, { data })
+      .afterClosed()
+      .pipe(
+        concatMap(res => (res ? this.subsService.deleteSub(id) : EMPTY)),
+        concatMap(() => this.getSubscribersByPage())
+      )
+      .subscribe(result => {
+        this.data = result;
+        this.snackbar.open('It has been successfully removed.', undefined, {
+          panelClass: 'success',
+          duration: 2500,
+        });
+      });
+  }
 }

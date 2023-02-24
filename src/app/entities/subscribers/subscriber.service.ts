@@ -23,4 +23,8 @@ export class SubscriberService {
       params,
     });
   }
+
+  deleteSub(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.resourceUrl}/${id}`);
+  }
 }
