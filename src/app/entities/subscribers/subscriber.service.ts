@@ -5,7 +5,7 @@ import { IPageParams } from 'src/app/core/models/page-params.model';
 import { IPageResponse } from 'src/app/core/models/page-response.model';
 import { createQueryParam } from 'src/app/core/utils/request-util';
 import { environment } from 'src/environments/environment';
-import { ISubscriber } from './subscriber.model';
+import { ISubscriber, PickSubscriber } from './subscriber.model';
 
 type EntityArrayResponse = IPageResponse<ISubscriber[]>;
 
@@ -30,5 +30,13 @@ export class SubscriberService {
 
   deleteSub(id: number): Observable<void> {
     return this.http.delete<void>(`${this.resourceUrl}/${id}`);
+  }
+
+  createSubscriber(subscriber: PickSubscriber): Observable<void> {
+    return this.http.post<void>(this.resourceUrl, subscriber);
+  }
+
+  updateSubscriber(subscriber: PickSubscriber): Observable<void> {
+    return this.http.put<void>(this.resourceUrl, subscriber);
   }
 }
