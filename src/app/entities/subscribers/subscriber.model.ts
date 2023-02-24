@@ -21,3 +21,17 @@ export interface ISubscriber {
   ConnectionState: number;
   Id: number;
 }
+
+export type IEditSubscriber = Pick<
+  ISubscriber,
+  | 'Id'
+  | 'Name'
+  | 'Email'
+  | 'CountryCode'
+  | 'PhoneNumber'
+  | 'JobTitle'
+  | 'Area'
+  | 'Topics'
+>;
+
+export type INewSubscriber = Omit<IEditSubscriber, 'id'>;

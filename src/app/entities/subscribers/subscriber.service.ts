@@ -24,6 +24,10 @@ export class SubscriberService {
     });
   }
 
+  getSubscriber(id: number): Observable<ISubscriber> {
+    return this.http.get<ISubscriber>(`${this.resourceUrl}/${id}`);
+  }
+
   deleteSub(id: number): Observable<void> {
     return this.http.delete<void>(`${this.resourceUrl}/${id}`);
   }
