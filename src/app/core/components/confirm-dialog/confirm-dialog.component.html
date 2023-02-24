@@ -1,0 +1,31 @@
+<div class="mb-3 mt-5 flex justify-center">
+  <mat-icon
+    [fontIcon]="data.icon"
+    color="accent"
+    class="h-12 w-12 text-5xl"
+  ></mat-icon>
+</div>
+
+<div class="flex justify-center text-xl font-medium text-pink-500">
+  <h2>{{ data.title }}</h2>
+</div>
+
+<div mat-dialog-content>
+  <div
+    class="w-[300px] text-center font-sans text-base font-normal text-gray-600"
+  >
+    {{ data.description }}
+  </div>
+</div>
+
+<div mat-dialog-actions class="flex flex-wrap justify-between">
+  <button mat-stroked-button [mat-dialog-close]="false">Cancel</button>
+  <button
+    mat-flat-button
+    color="accent"
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+  >
+    {{ data.buttonLabel }}
+  </button>
+</div>
