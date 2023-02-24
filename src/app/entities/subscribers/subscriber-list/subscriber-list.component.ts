@@ -1,38 +1,75 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SubscriberService } from '../subscriber.service';
 import { IPageParams } from 'src/app/core/models/page-params.model';
-import { CdkTableModule } from '@angular/cdk/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { ISubscriber } from '../subscriber.model';
-
-type SubscriberType = ISubscriber & { action: string };
+import { catchError, map, merge, of, startWith, switchMap } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-subscriber-list',
   standalone: true,
-  imports: [CommonModule, CdkTableModule, MatIconModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './subscriber-list.component.html',
 })
-export class SubscriberListComponent implements OnInit {
-  dataSource: any;
-  displayedColumns: (keyof SubscriberType)[] = [
+export class SubscriberListComponent implements AfterViewInit {
+  isLoadingResults = true;
+  resultsLength = 0;
+  data: ISubscriber[] = [];
+  pageSize = 10;
+
+  properties: (keyof ISubscriber)[] = [
     'Name',
     'JobTitle',
     'Area',
     'CountryName',
     'PhoneNumber',
-    'action',
   ];
+
+  displayedColumns: string[] = [...this.properties, 'action'];
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private subscriberService: SubscriberService) {}
 
-  ngOnInit() {
-    const params: IPageParams = { criteria: 'Otro' };
-    this.subscriberService.getAllSubscribers().subscribe(res => {
-      this.dataSource = new MatTableDataSource(res.Data);
-    });
+  ngAfterViewInit() {
+    merge(this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => this.getSubscribersByPage()),
+        map(result => {
+          this.isLoadingResults = false;
+
+          if (result === null) {
+            return [];
+          }
+
+          this.resultsLength = result.Count;
+          return result.Data;
+        })
+      )
+      .subscribe(result => (this.data = result));
+  }
+
+  getSubscribersByPage() {
+    this.isLoadingResults = true;
+    const params: IPageParams = {
+      page: this.paginator.pageIndex + 1,
+      count: this.pageSize,
+    };
+
+    return this.subscriberService
+      .getAllSubscribers(params)
+      .pipe(catchError(() => of(null)));
   }
 
   openUpdateDialog(id: number) {}

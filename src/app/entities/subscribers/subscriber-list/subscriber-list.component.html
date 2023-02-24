@@ -1,108 +1,45 @@
 <div class="p-5">
   <h2 class="mb-4 text-xl font-medium text-gray-600">Subscribers List</h2>
-  <cdk-table [dataSource]="dataSource" class="flex flex-col gap-3">
-    <ng-container cdkColumnDef="Name">
-      <cdk-header-cell *cdkHeaderCellDef> Name </cdk-header-cell>
-      <cdk-cell
-        *cdkCellDef="let element"
-        [style.flex]="3"
-        class="flex-1 self-center pl-5 text-sm"
-      >
-        <span class="font-medium text-pink-500">{{ element.Name }}</span>
-        <div class="text-gray-500">Name</div>
-      </cdk-cell>
-    </ng-container>
 
-    <ng-container cdkColumnDef="JobTitle">
-      <cdk-header-cell *cdkHeaderCellDef> JobTitle </cdk-header-cell>
-      <cdk-cell
-        *cdkCellDef="let element"
-        [style.flex]="2"
-        class="flex-1 self-center text-sm"
-      >
-        <div class="font-medium text-pink-500">
-          {{ element.JobTitle || 'No job title' }}
-        </div>
-        <div class="text-gray-500">JobTitle</div>
-      </cdk-cell>
-    </ng-container>
+  <div class="relative min-h-[500px] overflow-x-auto bg-white">
+    <div
+      class="absolute inset-0 z-10 flex items-center justify-center opacity-30"
+      *ngIf="isLoadingResults"
+    >
+      <mat-spinner color="accent" *ngIf="isLoadingResults"></mat-spinner>
+    </div>
 
-    <ng-container cdkColumnDef="Area">
-      <cdk-header-cell *cdkHeaderCellDef> Area </cdk-header-cell>
-      <cdk-cell
-        *cdkCellDef="let element"
-        [style.flex]="2"
-        class="flex-1 self-center text-sm"
-      >
-        <div class="font-medium text-pink-500">
-          {{ element.Area || 'No area' }}
-        </div>
-        <div class="text-gray-500">Area</div>
-      </cdk-cell>
-    </ng-container>
+    <table mat-table [dataSource]="data" class="w-full">
+      <ng-container [matColumnDef]="column" *ngFor="let column of properties">
+        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <td mat-cell *matCellDef="let row">{{ row[column] || 'No data' }}</td>
+      </ng-container>
 
-    <ng-container cdkColumnDef="CountryName">
-      <cdk-header-cell *cdkHeaderCellDef> CountryName </cdk-header-cell>
-      <cdk-cell
-        *cdkCellDef="let element"
-        [style.flex]="2"
-        class="flex-1 self-center text-sm"
-      >
-        <div class="font-medium text-pink-500">{{ element.CountryName }}</div>
-        <div class="text-gray-500">CountryName</div>
-      </cdk-cell>
-    </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="flex gap-x-3">
+            <button
+              class="grid h-9 w-9 cursor-pointer place-content-center rounded-full bg-pink-500 text-white"
+              (click)="openUpdateDialog(row.id)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
 
-    <ng-container cdkColumnDef="PhoneNumber">
-      <cdk-header-cell *cdkHeaderCellDef> PhoneNumber </cdk-header-cell>
-      <cdk-cell
-        *cdkCellDef="let element"
-        [style.flex]="2"
-        class="flex-1 self-center text-sm"
-      >
-        <div class="font-medium text-pink-500">
-          {{ element.PhoneNumber || 'No phone' }}
-        </div>
-        <div class="text-gray-500">PhoneNumber</div>
-      </cdk-cell>
-    </ng-container>
+            <button
+              class="grid h-9 w-9 cursor-pointer place-content-center rounded-full bg-pink-500 text-white"
+              (click)="openDeleteDialog(row.id)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
 
-    <ng-container cdkColumnDef="action">
-      <cdk-header-cell *cdkHeaderCellDef> Acción </cdk-header-cell>
-      <cdk-cell
-        *cdkCellDef="let element"
-        class="flex gap-x-3 self-center pr-5"
-        [style.flex]="1"
-      >
-        <button
-          matRipple
-          class="grid h-9 w-9 cursor-pointer place-content-center rounded-full bg-pink-500 text-white"
-          (click)="openUpdateDialog(element.id)"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 
-        <button
-          matRipple
-          class="grid h-9 w-9 cursor-pointer place-content-center rounded-full bg-pink-500 text-white"
-          (click)="openDeleteDialog(element.id)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </cdk-cell>
-    </ng-container>
-
-    <cdk-row
-      *cdkRowDef="let row; columns: displayedColumns"
-      class="flex h-16 gap-y-3 rounded bg-slate-100"
-    ></cdk-row>
-
-    <ng-template cdkNoDataRow>
-      <div class="flex h-16 gap-y-3 rounded bg-slate-100">
-        <div class="flex-1 self-center text-sm">
-          No se encontraron registros
-        </div>
-      </div>
-    </ng-template>
-  </cdk-table>
+  <mat-paginator [length]="resultsLength" [pageSize]="pageSize"></mat-paginator>
 </div>
