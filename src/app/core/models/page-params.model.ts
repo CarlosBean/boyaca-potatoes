@@ -3,5 +3,5 @@ export interface IPageParams {
   page?: number;
   count?: number;
   sortOrder?: string;
-  sortType?: number;
+  sortType?: 0 | 1;
 }
