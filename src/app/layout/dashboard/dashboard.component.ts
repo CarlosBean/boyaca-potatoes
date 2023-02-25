@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslocoRootModule } from 'src/app/transloco-root.module';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +29,7 @@ import { RouterModule } from '@angular/router';
     LayoutModule,
     MatButtonModule,
     RouterModule,
+    TranslocoRootModule,
   ],
 })
 export class DashboardComponent {

@@ -1,0 +1,11 @@
+{
+  "username": "Usuario",
+  "password": "Contraseña",
+  "username_required": "usuario es requerido",
+  "password_required": "contraseña es requerida",
+  "log_in": "iniciar sesión",
+  "welcome_back": "Bienvenido de regreso",
+
+  "subscribers": "Subscriptores",
+  "menu": "Menu"
+}

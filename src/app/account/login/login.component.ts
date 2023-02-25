@@ -9,6 +9,7 @@ import { AccountService } from '../account.service';
 import { catchError, EMPTY, finalize, Subject, takeUntil } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { TranslocoRootModule } from 'src/app/transloco-root.module';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ import { Router } from '@angular/router';
     MatInputModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    TranslocoRootModule,
   ],
 })
 export class LoginComponent implements OnDestroy {

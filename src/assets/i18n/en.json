@@ -1,0 +1,11 @@
+{
+  "username": "Username",
+  "password": "Password",
+  "username_required": "username is required",
+  "password_required": "password is required",
+  "log_in": "log in",
+  "welcome_back": "Welcome back",
+
+  "subscribers": "Subscribers",
+  "menu": "Menu"
+}
