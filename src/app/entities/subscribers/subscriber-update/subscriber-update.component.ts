@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SubscriberService } from '../subscriber.service';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY, forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { PickSubscriber, ISubscriber } from '../subscriber.model';
 import { CountryService } from '../../countries/country.service';
 import { ICountry } from '../../countries/country.model';
@@ -62,10 +62,10 @@ export class SubscriberUpdateComponent implements OnInit {
     const subId = params['id'];
 
     const requests$ = {
-      countries: this.countryService.getAllCountries({
-        count: 255,
-      }),
-      subscriber: subId ? this.subsService.getSubscriber(subId) : EMPTY,
+      countries: this.countryService.getAllCountries({ count: 255 }),
+      subscriber: Number(subId)
+        ? this.subsService.getSubscriber(subId)
+        : of(null),
     };
 
     this.initLoading = true;
@@ -99,8 +99,7 @@ export class SubscriberUpdateComponent implements OnInit {
   buildPayload(): PickSubscriber {
     const submitted = this.form.value;
 
-    return {
-      Id: this.subscriber?.Id ?? null,
+    const body: PickSubscriber = {
       Name: submitted.Name,
       Email: submitted.Email,
       CountryCode: submitted.CountryCode,
@@ -109,6 +108,12 @@ export class SubscriberUpdateComponent implements OnInit {
       Area: submitted.Area,
       Topics: [],
     };
+
+    if (this.subscriber?.Id) {
+      body.Id = this.subscriber?.Id;
+    }
+
+    return body;
   }
 
   submit() {
@@ -117,12 +122,13 @@ export class SubscriberUpdateComponent implements OnInit {
     }
 
     const payload = this.buildPayload();
-    const action = this.subscriber ? 'updateSubscriber' : 'createSubscriber';
+    const action = this.subscriber ? 'updateSubscriber' : 'createOneSubscriber';
 
     this.saveloading = true;
 
     this.subsService[action](payload).subscribe(() => {
       this.saveloading = false;
+      this.goBack();
       this.snackbar.open('It has been saved successfully.', 'Saved', {
         duration: 2500,
       });

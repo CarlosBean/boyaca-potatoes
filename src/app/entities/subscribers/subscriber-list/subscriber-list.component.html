@@ -1,5 +1,14 @@
 <div class="p-5">
-  <h2 class="mb-4 text-xl font-medium text-gray-600">Subscribers List</h2>
+  <div class="flex justify-between">
+    <h2 class="mb-4 text-xl font-medium text-gray-600">Subscribers List</h2>
+    <button
+      mat-flat-button
+      class="bg-pink-500 text-white"
+      (click)="openCreatePage()"
+    >
+      Add Subscriber
+    </button>
+  </div>
 
   <div class="relative min-h-[500px] overflow-x-auto bg-white">
     <div

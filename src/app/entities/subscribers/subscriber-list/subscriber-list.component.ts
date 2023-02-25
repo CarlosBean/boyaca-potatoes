@@ -22,6 +22,7 @@ import { ConfirmDialogComponent } from 'src/app/core/components/confirm-dialog/c
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-subscriber-list',
@@ -34,6 +35,7 @@ import { Router } from '@angular/router';
     MatProgressSpinnerModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatButtonModule,
   ],
   templateUrl: './subscriber-list.component.html',
 })
@@ -92,6 +94,10 @@ export class SubscriberListComponent implements AfterViewInit {
         return result.Data;
       })
     );
+  }
+
+  openCreatePage() {
+    this.router.navigate(['dashboard', 'subscribers', 'new']);
   }
 
   openUpdatePage(id: number) {
