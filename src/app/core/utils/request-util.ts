@@ -1,5 +1,10 @@
 import { HttpParams } from '@angular/common/http';
 
+/**
+ * allow create http params to send into request with pagination
+ * @param query object with page params
+ * @returns http params object with page params
+ */
 export const createQueryParam = (query?: any): HttpParams => {
   let params: HttpParams = new HttpParams();
 
