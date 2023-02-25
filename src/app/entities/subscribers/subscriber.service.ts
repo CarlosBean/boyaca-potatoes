@@ -32,8 +32,9 @@ export class SubscriberService {
     return this.http.delete<void>(`${this.resourceUrl}/${id}`);
   }
 
-  createSubscriber(subscriber: PickSubscriber): Observable<void> {
-    return this.http.post<void>(this.resourceUrl, subscriber);
+  createOneSubscriber(subscriber: PickSubscriber): Observable<void> {
+    const payload = { Subscribers: [subscriber] };
+    return this.http.post<void>(this.resourceUrl, payload);
   }
 
   updateSubscriber(subscriber: PickSubscriber): Observable<void> {
