@@ -7,5 +7,14 @@
   "welcome_back": "Bienvenido de regreso",
 
   "subscribers": "Subscriptores",
-  "menu": "Menu"
+  "menu": "Menu",
+
+  "subscriber_list": "Lista de subscriptores",
+  "add_subscriber": "Añadir subscriptor",
+  "action": "Acción",
+  "Name": "Nombre",
+  "JobTitle": "Título",
+  "Area": "Área",
+  "CountryName": "Ciudad",
+  "PhoneNumber": "Teléfono"
 }

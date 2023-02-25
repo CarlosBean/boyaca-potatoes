@@ -7,5 +7,14 @@
   "welcome_back": "Welcome back",
 
   "subscribers": "Subscribers",
-  "menu": "Menu"
+  "menu": "Menu",
+
+  "subscriber_list": "Subscriber List",
+  "add_subscriber": "Add subscriber",
+  "action": "Action",
+  "Name": "Name",
+  "JobTitle": "Job Title",
+  "Area": "Area",
+  "CountryName": "Country Name",
+  "PhoneNumber": "Phone number"
 }

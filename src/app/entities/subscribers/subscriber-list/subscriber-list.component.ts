@@ -23,6 +23,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-subscriber-list',
@@ -36,6 +37,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatSnackBarModule,
     MatButtonModule,
+    TranslocoModule,
   ],
   templateUrl: './subscriber-list.component.html',
 })
