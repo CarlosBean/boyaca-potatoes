@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SubscriberService } from '../subscriber.service';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subject, takeUntil } from 'rxjs';
 import { PickSubscriber, ISubscriber } from '../subscriber.model';
 import { CountryService } from '../../countries/country.service';
 import { ICountry } from '../../countries/country.model';
@@ -35,7 +35,8 @@ import { TranslocoRootModule } from 'src/app/transloco-root.module';
   ],
   templateUrl: './subscriber-update.component.html',
 })
-export class SubscriberUpdateComponent implements OnInit {
+export class SubscriberUpdateComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   subscriber!: ISubscriber;
 
   saveloading = false;
@@ -71,14 +72,16 @@ export class SubscriberUpdateComponent implements OnInit {
         : of(null),
     };
 
-    forkJoin(requests$).subscribe(res => {
-      this.countries = res.countries.Data;
+    forkJoin(requests$)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+        this.countries = res.countries.Data;
 
-      if (res.subscriber) {
-        this.subscriber = res.subscriber;
-        this.patchForm(res.subscriber);
-      }
-    });
+        if (res.subscriber) {
+          this.subscriber = res.subscriber;
+          this.patchForm(res.subscriber);
+        }
+      });
   }
 
   goBack() {
@@ -126,12 +129,19 @@ export class SubscriberUpdateComponent implements OnInit {
 
     this.saveloading = true;
 
-    this.subsService[action](payload).subscribe(() => {
-      this.saveloading = false;
-      this.goBack();
-      this.snackbar.open('It has been saved successfully.', 'Saved', {
-        duration: 2500,
+    this.subsService[action](payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.saveloading = false;
+        this.goBack();
+        this.snackbar.open('It has been saved successfully.', 'Saved', {
+          duration: 2500,
+        });
       });
-    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

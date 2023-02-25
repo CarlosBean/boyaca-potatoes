@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SubscriberService } from '../subscriber.service';
 import { IPageParams } from 'src/app/core/models/page-params.model';
@@ -14,7 +14,9 @@ import {
   merge,
   of,
   startWith,
+  Subject,
   switchMap,
+  takeUntil,
 } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IConfirmDialog } from 'src/app/core/models/confirm-dialog.model';
@@ -41,7 +43,9 @@ import { TranslocoModule } from '@ngneat/transloco';
   ],
   templateUrl: './subscriber-list.component.html',
 })
-export class SubscriberListComponent implements AfterViewInit {
+export class SubscriberListComponent implements AfterViewInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   isLoadingResults = true;
   resultsLength = 0;
   data: ISubscriber[] = [];
@@ -69,6 +73,7 @@ export class SubscriberListComponent implements AfterViewInit {
   ngAfterViewInit() {
     merge(this.paginator.page)
       .pipe(
+        takeUntil(this.destroy$),
         startWith({}),
         switchMap(() => this.getSubscribersByPage())
       )
@@ -118,6 +123,7 @@ export class SubscriberListComponent implements AfterViewInit {
       .open(ConfirmDialogComponent, { data })
       .afterClosed()
       .pipe(
+        takeUntil(this.destroy$),
         concatMap(res => (res ? this.subsService.deleteSub(id) : EMPTY)),
         concatMap(() => this.getSubscribersByPage())
       )
@@ -127,5 +133,10 @@ export class SubscriberListComponent implements AfterViewInit {
           duration: 2500,
         });
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
