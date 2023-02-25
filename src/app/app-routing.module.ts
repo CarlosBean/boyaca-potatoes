@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './account/login/login.component';
 import { SubscriberListComponent } from './entities/subscribers/subscriber-list/subscriber-list.component';
+import { SubscriberUpdateComponent } from './entities/subscribers/subscriber-update/subscriber-update.component';
 import { DashboardComponent } from './layout/dashboard/dashboard.component';
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'subscribers' },
       { path: 'subscribers', component: SubscriberListComponent },
+      { path: 'subscribers/:id', component: SubscriberUpdateComponent },
     ],
   },
   { path: '**', component: LoginComponent },

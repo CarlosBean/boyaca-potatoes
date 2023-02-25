@@ -21,6 +21,7 @@ import { IConfirmDialog } from 'src/app/core/models/confirm-dialog.model';
 import { ConfirmDialogComponent } from 'src/app/core/components/confirm-dialog/confirm-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-subscriber-list',
@@ -57,7 +58,8 @@ export class SubscriberListComponent implements AfterViewInit {
   constructor(
     private subsService: SubscriberService,
     private dialog: MatDialog,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngAfterViewInit() {
@@ -92,7 +94,9 @@ export class SubscriberListComponent implements AfterViewInit {
     );
   }
 
-  openUpdateDialog(id: number) {}
+  openUpdatePage(id: number) {
+    this.router.navigate(['dashboard', 'subscribers', id]);
+  }
 
   openDeleteDialog(id: number) {
     const data: IConfirmDialog = {
@@ -111,8 +115,7 @@ export class SubscriberListComponent implements AfterViewInit {
       )
       .subscribe(result => {
         this.data = result;
-        this.snackbar.open('It has been successfully removed.', undefined, {
-          panelClass: 'success',
+        this.snackbar.open('It has been successfully deleted.', 'Deleted', {
           duration: 2500,
         });
       });
