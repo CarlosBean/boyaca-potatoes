@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SubscriberService } from '../subscriber.service';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
+import { combineLatest, distinctUntilChanged, forkJoin, of } from 'rxjs';
 import { PickSubscriber, ISubscriber } from '../subscriber.model';
 import { CountryService } from '../../countries/country.service';
 import { ICountry } from '../../countries/country.model';
@@ -14,6 +14,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-subscriber-update',
@@ -28,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatIconModule,
     MatSelectModule,
     MatOptionModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './subscriber-update.component.html',
 })
@@ -35,15 +37,14 @@ export class SubscriberUpdateComponent implements OnInit {
   subscriber!: ISubscriber;
 
   saveloading = false;
-  initLoading = false;
 
   countries: ICountry[] = [];
 
   form = this.fb.nonNullable.group({
     Name: ['', [Validators.required]],
-    Email: ['', [Validators.required, Validators.email]],
+    Email: ['', [Validators.email]],
     CountryCode: ['', [Validators.required]],
-    PhoneNumber: ['', [Validators.required]],
+    PhoneNumber: [''],
     JobTitle: [''],
     Area: [''],
   });
@@ -68,10 +69,7 @@ export class SubscriberUpdateComponent implements OnInit {
         : of(null),
     };
 
-    this.initLoading = true;
-
     forkJoin(requests$).subscribe(res => {
-      this.initLoading = false;
       this.countries = res.countries.Data;
 
       if (res.subscriber) {

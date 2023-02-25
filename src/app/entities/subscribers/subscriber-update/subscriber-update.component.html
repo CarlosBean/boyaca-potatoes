@@ -1,7 +1,10 @@
 <div class="p-5">
   <div class="m-auto max-w-4xl rounded-md bg-white p-8 shadow-md">
     <div class="flex">
-      <mat-icon color="accent">edit</mat-icon>
+      <mat-icon
+        color="accent"
+        [fontIcon]="subscriber ? 'edit' : 'person_add'"
+      ></mat-icon>
       <h2 class="mb-4 ml-2 text-xl font-medium text-gray-600">
         {{ subscriber ? 'Edit' : 'New' }} Subscriber
       </h2>
@@ -24,20 +27,19 @@
       <mat-form-field>
         <mat-label>Email</mat-label>
         <input matInput formControlName="Email" />
-        <mat-error *ngIf="form.get('Email')?.errors?.['required']">
-          <span class="text-xs"> Email is required </span>
-        </mat-error>
-
         <mat-error *ngIf="form.get('Email')?.errors?.['email']">
           <span class="text-xs"> Email is invalid </span>
+        </mat-error>
+        <mat-error *ngIf="form.get('Email')?.errors?.['required']">
+          <span class="text-xs">Email is required </span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Country</mat-label>
+        <mat-label>Country Code</mat-label>
         <mat-select formControlName="CountryCode">
           <mat-option *ngFor="let item of countries" [value]="item.Code">
-            {{ item.Name | titlecase }}
+            {{ item.Code }} - {{ item.Name }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('CountryCode')?.errors?.['required']">
@@ -56,17 +58,11 @@
       <mat-form-field>
         <mat-label>JobTitle</mat-label>
         <input matInput formControlName="JobTitle" />
-        <mat-error *ngIf="form.get('JobTitle')?.errors?.['required']">
-          <span class="text-xs">JobTitle is required </span>
-        </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Area</mat-label>
         <input matInput formControlName="Area" />
-        <mat-error *ngIf="form.get('Area')?.errors?.['required']">
-          <span class="text-xs">Area is required </span>
-        </mat-error>
       </mat-form-field>
 
       <div class="col-span-full flex justify-between">
@@ -78,7 +74,14 @@
         >
           Back to list
         </button>
-        <button mat-flat-button color="primary">Save changes</button>
+        <div class="flex items-center gap-x-3">
+          <mat-spinner
+            *ngIf="saveloading"
+            diameter="30"
+            color="accent"
+          ></mat-spinner>
+          <button mat-flat-button color="primary">Save changes</button>
+        </div>
       </div>
     </form>
   </div>
