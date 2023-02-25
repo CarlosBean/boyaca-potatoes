@@ -1,1 +1,85 @@
-<p>subscriber-update works!</p>
+<div class="p-5">
+  <div class="m-auto max-w-4xl rounded-md bg-white p-8 shadow-md">
+    <div class="flex">
+      <mat-icon color="accent">edit</mat-icon>
+      <h2 class="mb-4 ml-2 text-xl font-medium text-gray-600">
+        {{ subscriber ? 'Edit' : 'New' }} Subscriber
+      </h2>
+    </div>
+    <form
+      class="grid grid-cols-1 gap-x-5 gap-y-2 text-sm md:grid-cols-2"
+      name="form"
+      novalidate
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+    >
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="Name" />
+        <mat-error *ngIf="form.get('Name')?.errors?.['required']">
+          <span class="text-xs"> Name is required </span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="Email" />
+        <mat-error *ngIf="form.get('Email')?.errors?.['required']">
+          <span class="text-xs"> Email is required </span>
+        </mat-error>
+
+        <mat-error *ngIf="form.get('Email')?.errors?.['email']">
+          <span class="text-xs"> Email is invalid </span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Country</mat-label>
+        <mat-select formControlName="CountryCode">
+          <mat-option *ngFor="let item of countries" [value]="item.Code">
+            {{ item.Name | titlecase }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('CountryCode')?.errors?.['required']">
+          <span class="text-xs">CountryCode is required </span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>PhoneNumber</mat-label>
+        <input matInput formControlName="PhoneNumber" />
+        <mat-error *ngIf="form.get('PhoneNumber')?.errors?.['required']">
+          <span class="text-xs">PhoneNumber is required </span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>JobTitle</mat-label>
+        <input matInput formControlName="JobTitle" />
+        <mat-error *ngIf="form.get('JobTitle')?.errors?.['required']">
+          <span class="text-xs">JobTitle is required </span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Area</mat-label>
+        <input matInput formControlName="Area" />
+        <mat-error *ngIf="form.get('Area')?.errors?.['required']">
+          <span class="text-xs">Area is required </span>
+        </mat-error>
+      </mat-form-field>
+
+      <div class="col-span-full flex justify-between">
+        <button
+          mat-stroked-button
+          color="accent"
+          type="button"
+          (click)="goBack()"
+        >
+          Back to list
+        </button>
+        <button mat-flat-button color="primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+</div>

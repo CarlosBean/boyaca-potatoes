@@ -11,6 +11,9 @@ import { PickSubscriber, ISubscriber } from '../subscriber.model';
 import { CountryService } from '../../countries/country.service';
 import { ICountry } from '../../countries/country.model';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-subscriber-update',
@@ -22,6 +25,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatIconModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
   templateUrl: './subscriber-update.component.html',
 })
@@ -35,12 +41,11 @@ export class SubscriberUpdateComponent implements OnInit {
 
   form = this.fb.nonNullable.group({
     Name: ['', [Validators.required]],
-    Email: [''],
-    CountryCode: [''],
-    PhoneNumber: [''],
+    Email: ['', [Validators.required, Validators.email]],
+    CountryCode: ['', [Validators.required]],
+    PhoneNumber: ['', [Validators.required]],
     JobTitle: [''],
     Area: [''],
-    Topics: [''],
   });
 
   constructor(
@@ -57,7 +62,9 @@ export class SubscriberUpdateComponent implements OnInit {
     const subId = params['id'];
 
     const requests$ = {
-      countries: this.countryService.getAllCountries({ count: 255 }),
+      countries: this.countryService.getAllCountries({
+        count: 255,
+      }),
       subscriber: subId ? this.subsService.getSubscriber(subId) : EMPTY,
     };
 
@@ -86,7 +93,6 @@ export class SubscriberUpdateComponent implements OnInit {
       PhoneNumber: data.PhoneNumber,
       JobTitle: data.JobTitle,
       Area: data.Area,
-      Topics: data.Topics?.join(),
     });
   }
 
@@ -101,7 +107,7 @@ export class SubscriberUpdateComponent implements OnInit {
       PhoneNumber: submitted.PhoneNumber,
       JobTitle: submitted.JobTitle,
       Area: submitted.Area,
-      Topics: submitted.Topics?.split(','),
+      Topics: [],
     };
   }
 
@@ -117,8 +123,8 @@ export class SubscriberUpdateComponent implements OnInit {
 
     this.subsService[action](payload).subscribe(() => {
       this.saveloading = false;
-      this.snackbar.open('It has been saved successfully.', undefined, {
-        panelClass: 'success',
+      this.snackbar.open('It has been saved successfully.', 'Saved', {
+        duration: 2500,
       });
     });
   }
