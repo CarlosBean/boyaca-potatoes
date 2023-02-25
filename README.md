@@ -1,6 +1,18 @@
 # BoyacaPotatoes
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.6.
+This project was create with Angular version 15.1.6 using:
+  - Standalone components
+  - Reactive Forms
+  - Material Angular 15
+  - Tailwind 3
+  - Transloco (i18n)
+  
+Features:
+  - Authentication by JWT 
+  - Lazy load on components
+  - CRUD of subscriber resource
+  - i18n
+  - server pagination with material paginator component
 
 ## Development server
 
