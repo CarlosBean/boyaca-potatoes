@@ -62,17 +62,7 @@ export class SubscriberUpdateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const params = this.route.snapshot.params;
-    const subId = params['id'];
-
-    const requests$ = {
-      countries: this.countryService.getAllCountries({ count: 255 }),
-      subscriber: Number(subId)
-        ? this.subsService.getSubscriber(subId)
-        : of(null),
-    };
-
-    forkJoin(requests$)
+    this.initialRequests()
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => {
         this.countries = res.countries.Data;
@@ -82,6 +72,18 @@ export class SubscriberUpdateComponent implements OnInit, OnDestroy {
           this.patchForm(res.subscriber);
         }
       });
+  }
+
+  initialRequests() {
+    const params = this.route.snapshot.params;
+    const id = params['id'];
+
+    const requests$ = {
+      countries: this.countryService.getAllCountries({ count: 255 }),
+      subscriber: Number(id) ? this.subsService.getSubscriber(id) : of(null),
+    };
+
+    return forkJoin(requests$);
   }
 
   goBack() {
