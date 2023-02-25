@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SubscriberService } from '../subscriber.service';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, distinctUntilChanged, forkJoin, of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { PickSubscriber, ISubscriber } from '../subscriber.model';
 import { CountryService } from '../../countries/country.service';
 import { ICountry } from '../../countries/country.model';
@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslocoRootModule } from 'src/app/transloco-root.module';
 
 @Component({
   selector: 'app-subscriber-update',
@@ -30,6 +31,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSelectModule,
     MatOptionModule,
     MatProgressSpinnerModule,
+    TranslocoRootModule,
   ],
   templateUrl: './subscriber-update.component.html',
 })

@@ -1,4 +1,4 @@
-<div class="p-5">
+<div class="p-5" *transloco="let t">
   <div class="m-auto max-w-4xl rounded-md bg-white p-8 shadow-md">
     <div class="flex">
       <mat-icon
@@ -6,7 +6,7 @@
         [fontIcon]="subscriber ? 'edit' : 'person_add'"
       ></mat-icon>
       <h2 class="mb-4 ml-2 text-xl font-medium text-gray-600">
-        {{ subscriber ? 'Edit' : 'New' }} Subscriber
+        {{ t(subscriber ? 'edit_subscriber' : 'new_subscriber') }}
       </h2>
     </div>
     <form
@@ -17,51 +17,51 @@
       (ngSubmit)="submit()"
     >
       <mat-form-field>
-        <mat-label>Name</mat-label>
+        <mat-label>{{ t('Name') }}</mat-label>
         <input matInput formControlName="Name" />
         <mat-error *ngIf="form.get('Name')?.errors?.['required']">
-          <span class="text-xs"> Name is required </span>
+          <span class="text-xs">{{ t('Name_required') }}</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Email</mat-label>
+        <mat-label>{{ t('Email') }}</mat-label>
         <input matInput formControlName="Email" />
         <mat-error *ngIf="form.get('Email')?.errors?.['email']">
-          <span class="text-xs"> Email is invalid </span>
+          <span class="text-xs">{{ t('Email_required') }}</span>
         </mat-error>
         <mat-error *ngIf="form.get('Email')?.errors?.['required']">
-          <span class="text-xs">Email is required </span>
+          <span class="text-xs">{{ t('Email_invalid') }}</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Country Code</mat-label>
+        <mat-label>{{ t('CountryCode') }}</mat-label>
         <mat-select formControlName="CountryCode">
           <mat-option *ngFor="let item of countries" [value]="item.Code">
             {{ item.Code }} - {{ item.Name }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('CountryCode')?.errors?.['required']">
-          <span class="text-xs">CountryCode is required </span>
+          <span class="text-xs">{{ t('CountryCode_required') }}</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>PhoneNumber</mat-label>
+        <mat-label>{{ t('PhoneNumber') }}</mat-label>
         <input matInput formControlName="PhoneNumber" />
         <mat-error *ngIf="form.get('PhoneNumber')?.errors?.['required']">
-          <span class="text-xs">PhoneNumber is required </span>
+          <span class="text-xs">{{ t('PhoneNumber_required') }}</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>JobTitle</mat-label>
+        <mat-label>{{ t('JobTitle') }}</mat-label>
         <input matInput formControlName="JobTitle" />
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Area</mat-label>
+        <mat-label>{{ t('Area') }}</mat-label>
         <input matInput formControlName="Area" />
       </mat-form-field>
 
@@ -72,7 +72,7 @@
           type="button"
           (click)="goBack()"
         >
-          Back to list
+          {{ t('back_to_list') }}
         </button>
         <div class="flex items-center gap-x-3">
           <mat-spinner
@@ -80,7 +80,9 @@
             diameter="30"
             color="accent"
           ></mat-spinner>
-          <button mat-flat-button color="primary">Save changes</button>
+          <button mat-flat-button color="primary">
+            {{ t('save_changes') }}
+          </button>
         </div>
       </div>
     </form>

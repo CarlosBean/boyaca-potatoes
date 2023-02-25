@@ -13,8 +13,21 @@
   "add_subscriber": "Add subscriber",
   "action": "Action",
   "Name": "Name",
+  "Email": "Email",
+  "CountryCode": "Country Code",
   "JobTitle": "Job Title",
   "Area": "Area",
   "CountryName": "Country Name",
-  "PhoneNumber": "Phone number"
+  "PhoneNumber": "Phone number",
+
+  "Name_required": "name is required",
+  "CountryCode_required": "country code is required",
+  "Email_required": "email is required",
+  "Email_invalid": "email is invalid",
+  "PhoneNumber_required": "phone number is required",
+
+  "new_subscriber": "New subscriber",
+  "edit_subscriber": "Edit subscriber",
+  "back_to_list": "Back to list",
+  "save_changes": "Save changes"
 }

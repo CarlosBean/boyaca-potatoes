@@ -13,8 +13,21 @@
   "add_subscriber": "Añadir subscriptor",
   "action": "Acción",
   "Name": "Nombre",
+  "Email": "Email",
+  "CountryCode": "Código Ciudad",
   "JobTitle": "Título",
   "Area": "Área",
   "CountryName": "Ciudad",
-  "PhoneNumber": "Teléfono"
+  "PhoneNumber": "Teléfono",
+
+  "Name_required": "nombre es requerido",
+  "CountryCode_required": "código ciudad es requerido",
+  "Email_required": "email es requerido",
+  "Email_invalid": "email es invalido",
+  "PhoneNumber_required": "teléfono es requerido",
+
+  "new_subscriber": "Nuevo subscriptor",
+  "edit_subscriber": "Editar subscriptor",
+  "back_to_list": "Regresar a lista",
+  "save_changes": "Guardar cambios"
 }
