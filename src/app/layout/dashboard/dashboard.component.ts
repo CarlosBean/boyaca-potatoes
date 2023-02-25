@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   BreakpointObserver,
   Breakpoints,
@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslocoRootModule } from 'src/app/transloco-root.module';
+import { MatRippleModule } from '@angular/material/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,9 +32,13 @@ import { TranslocoRootModule } from 'src/app/transloco-root.module';
     MatButtonModule,
     RouterModule,
     TranslocoRootModule,
+    MatRippleModule,
   ],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  activeLang!: string;
+  availableLangs!: string[];
+
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
@@ -40,5 +46,18 @@ export class DashboardComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private translocoService: TranslocoService
+  ) {}
+
+  ngOnInit(): void {
+    this.availableLangs = this.translocoService.getAvailableLangs() as string[];
+    this.activeLang = this.translocoService.getActiveLang();
+  }
+
+  changeLang(lang: string): void {
+    this.translocoService.setActiveLang(lang);
+    this.activeLang = lang;
+  }
 }

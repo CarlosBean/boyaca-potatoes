@@ -33,7 +33,22 @@
         >
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <span>Patatas Subscribers To Go</span>
+
+        <div class="flex w-full items-center justify-between">
+          <span>Patatas Subscribers To Go</span>
+
+          <div class="flex gap-x-3">
+            <button
+              mat-ripple
+              (click)="changeLang(lang)"
+              [class.bg-cyan-500]="activeLang === lang"
+              class="h-8 w-8 rounded-full bg-gray-500 text-sm uppercase text-white"
+              *ngFor="let lang of availableLangs"
+            >
+              {{ lang }}
+            </button>
+          </div>
+        </div>
       </mat-toolbar>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
