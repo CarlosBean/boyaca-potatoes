@@ -29,5 +29,10 @@
   "new_subscriber": "New subscriber",
   "edit_subscriber": "Edit subscriber",
   "back_to_list": "Back to list",
-  "save_changes": "Save changes"
+  "save_changes": "Save changes",
+
+  "cancel": "Cancel",
+  "delete_dialog_title": "Delete item",
+  "delete_dialog_desc": "Are you sure you want to delete this item?",
+  "delete": "Delete"
 }

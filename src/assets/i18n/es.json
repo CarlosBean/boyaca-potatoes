@@ -29,5 +29,10 @@
   "new_subscriber": "Nuevo subscriptor",
   "edit_subscriber": "Editar subscriptor",
   "back_to_list": "Regresar a lista",
-  "save_changes": "Guardar cambios"
+  "save_changes": "Guardar cambios",
+
+  "cancel": "Cancelar",
+  "delete_dialog_title": "Eliminar item",
+  "delete_dialog_desc": "¿Está seguro de eliminar este item?",
+  "delete": "Eliminar"
 }

@@ -108,9 +108,9 @@ export class SubscriberListComponent implements AfterViewInit {
 
   openDeleteDialog(id: number) {
     const data: IConfirmDialog = {
-      title: 'Delete item',
-      description: 'Are you sure you want to delete this item?',
-      buttonLabel: 'Delete',
+      title: 'delete_dialog_title',
+      description: 'delete_dialog_desc',
+      buttonLabel: 'delete',
       icon: 'delete',
     };
 
