@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { AccountService } from '../account.service';
-import { catchError, EMPTY, finalize, Subject, takeUntil, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, Subject, takeUntil } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -52,17 +52,16 @@ export class LoginComponent implements OnDestroy {
       .login(this.form.value)
       .pipe(
         takeUntil(this.destroy$),
-        tap(() => {
-          this.error = '';
-          this.router.navigate(['dashboard']);
-        }),
         finalize(() => (this.loading = false)),
         catchError((err: HttpErrorResponse) => {
           this.error = err.error.error;
           return EMPTY;
         })
       )
-      .subscribe();
+      .subscribe(() => {
+        this.error = '';
+        this.router.navigate(['dashboard']);
+      });
   }
 
   ngOnDestroy() {
