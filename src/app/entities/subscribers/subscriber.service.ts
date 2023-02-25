@@ -37,6 +37,9 @@ export class SubscriberService {
   }
 
   updateSubscriber(subscriber: PickSubscriber): Observable<void> {
-    return this.http.put<void>(this.resourceUrl, subscriber);
+    return this.http.put<void>(
+      `${this.resourceUrl}/${subscriber.Id}`,
+      subscriber
+    );
   }
 }
