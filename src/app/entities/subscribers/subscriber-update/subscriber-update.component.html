@@ -28,10 +28,10 @@
         <mat-label>{{ t('Email') }}</mat-label>
         <input matInput formControlName="Email" />
         <mat-error *ngIf="form.get('Email')?.errors?.['email']">
-          <span class="text-xs">{{ t('Email_required') }}</span>
+          <span class="text-xs">{{ t('Email_invalid') }}</span>
         </mat-error>
         <mat-error *ngIf="form.get('Email')?.errors?.['required']">
-          <span class="text-xs">{{ t('Email_invalid') }}</span>
+          <span class="text-xs">{{ t('Email_required') }}</span>
         </mat-error>
       </mat-form-field>
 

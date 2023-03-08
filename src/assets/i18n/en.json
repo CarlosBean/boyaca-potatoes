@@ -19,6 +19,7 @@
   "Area": "Area",
   "CountryName": "Country Name",
   "PhoneNumber": "Phone number",
+  "search_by_name": "Search by name",
 
   "Name_required": "name is required",
   "CountryCode_required": "country code is required",

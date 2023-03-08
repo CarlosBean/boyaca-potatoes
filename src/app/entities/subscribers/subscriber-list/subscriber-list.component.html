@@ -1,15 +1,23 @@
 <div class="p-5" *transloco="let t">
-  <div class="flex justify-between">
-    <h2 class="mb-4 text-xl font-medium text-gray-600">
+  <div class="flex flex-wrap justify-between gap-y-4">
+    <h2 class="text-xl font-medium text-gray-600">
       {{ t('subscriber_list') }}
     </h2>
     <button
       mat-flat-button
-      class="bg-pink-500 text-white"
+      class="w-full bg-pink-500 text-white sm:w-auto"
       (click)="openCreatePage()"
     >
       {{ t('add_subscriber') }}
     </button>
+    <div class="mb-4 w-full">
+      <input
+        type="text"
+        class="h-10 w-full rounded-md py-1 px-3 outline-pink-500"
+        (input)="searchText$.next($any($event).target.value)"
+        [placeholder]="t('search_by_name')"
+      />
+    </div>
   </div>
 
   <div class="relative min-h-[500px] overflow-x-auto bg-white">

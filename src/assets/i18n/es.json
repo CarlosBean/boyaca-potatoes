@@ -19,6 +19,7 @@
   "Area": "Área",
   "CountryName": "Ciudad",
   "PhoneNumber": "Teléfono",
+  "search_by_name": "Buscar por nombre",
 
   "Name_required": "nombre es requerido",
   "CountryCode_required": "código ciudad es requerido",
