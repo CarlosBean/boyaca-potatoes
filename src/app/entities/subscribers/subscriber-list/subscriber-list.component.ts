@@ -26,6 +26,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslocoModule } from '@ngneat/transloco';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-subscriber-list',
@@ -40,6 +41,7 @@ import { TranslocoModule } from '@ngneat/transloco';
     MatSnackBarModule,
     MatButtonModule,
     TranslocoModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './subscriber-list.component.html',
 })
@@ -61,6 +63,8 @@ export class SubscriberListComponent implements AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = [...this.properties, 'action'];
 
+  searchText$ = new Subject<string>();
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
@@ -71,21 +75,29 @@ export class SubscriberListComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit() {
-    merge(this.paginator.page)
+    merge(this.paginator.page, this.searchText$)
       .pipe(
         takeUntil(this.destroy$),
         startWith({}),
-        switchMap(() => this.getSubscribersByPage())
+        switchMap(value => {
+          if (typeof value === 'string') {
+            this.paginator.firstPage();
+            return this.getSubscribersByPage(value);
+          }
+
+          return this.getSubscribersByPage();
+        })
       )
       .subscribe(result => (this.data = result));
   }
 
-  getSubscribersByPage() {
+  getSubscribersByPage(searchText?: string) {
     this.isLoadingResults = true;
 
     const params: IPageParams = {
       page: this.paginator.pageIndex + 1,
       count: this.pageSize,
+      criteria: searchText || '',
     };
 
     return this.subsService.getAllSubscribers(params).pipe(
