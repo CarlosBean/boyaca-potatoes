@@ -1,22 +1,24 @@
 # BoyacaPotatoes
 
 This project was create with Angular version 15.1.6 using:
-  - Standalone components
-  - Reactive Forms
-  - Material Angular 15
-  - Tailwind 3
-  - Transloco (i18n)
-  
+
+- Standalone components
+- Reactive Forms
+- Material Angular 15
+- Tailwind 3
+- Transloco (i18n)
+
 Features:
-  - Authentication by JWT 
-  - Lazy load on components
-  - CRUD of subscriber resource
-  - i18n
-  - server pagination with material paginator component
+
+- Authentication by JWT
+- Lazy load on components
+- CRUD of subscriber resource
+- i18n
+- server pagination with material paginator component
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server 1. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
