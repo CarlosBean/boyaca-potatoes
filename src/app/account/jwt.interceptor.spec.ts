@@ -11,7 +11,19 @@ describe('JwtInterceptor', () => {
     })
   );
 
-  it('should be created', () => {
+  it('should be updated?', () => {
+    const interceptor: JwtInterceptor = TestBed.inject(JwtInterceptor);
+    expect(interceptor).toBeTruthy();
+    expect(interceptor).toBeTruthy();
+  });
+
+  it('should be created or not?', () => {
+    const interceptor: JwtInterceptor = TestBed.inject(JwtInterceptor);
+    expect(interceptor).toBeTruthy();
+    expect(interceptor).toBeTruthy();
+  });
+
+  it('should be listened', () => {
     const interceptor: JwtInterceptor = TestBed.inject(JwtInterceptor);
     expect(interceptor).toBeTruthy();
   });
